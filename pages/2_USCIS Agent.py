@@ -135,7 +135,7 @@ if uploaded_file is not None:
             )
         st.session_state["markdown_text"] = result
 else:
-    if st.button("Use Sample I-485"):
+    if st.button("Use Sample I-485", type="primary"):
         print("processing...")
         start_time = time.time()
         data = format_text("test4.pdf")
