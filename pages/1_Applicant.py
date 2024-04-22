@@ -104,16 +104,55 @@ if uploaded_file is not None:
     # print(data)
 
     if st.button("Process PDF"):
+        start_time = time.time()
         result = read_pdf_(data)
+        processing_time = time.time() - start_time
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric(
+                "Doc Buddy Processing Time",
+                f"{processing_time:.2f} Seconds",
+                delta="+FAST",
+                delta_color="normal",
+                help=None,
+                label_visibility="visible",
+            )
+        with col2:
+            st.metric(
+                "Current USCIS Processing Time",
+                "29 Months",
+                delta="-SLOW",
+                delta_color="normal",
+                help=None,
+                label_visibility="visible",
+            )
         st.session_state["markdown_text"] = result
 else:
     if st.button("Use Sample I-485", type="primary"):
-        # with open("test4.pdf", "rb") as f:
-        #    bytes_data = f.read()
-        # uploaded_test_file = io.BytesIO(bytes_data)
         print("processing...")
+        start_time = time.time()
         data = format_text("test4.pdf")
         result = read_pdf_(data)
+        processing_time = time.time() - start_time
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric(
+                "Doc Buddy Processing Time",
+                f"{processing_time:.2f} Seconds",
+                delta="+FAST",
+                delta_color="normal",
+                help=None,
+                label_visibility="visible",
+            )
+        with col2:
+            st.metric(
+                "Current USCIS Processing Time",
+                "29 Months",
+                delta="-SLOW",
+                delta_color="normal",
+                help=None,
+                label_visibility="visible",
+            )
         st.session_state["markdown_text"] = result
 
 if "markdown_text" in st.session_state:
