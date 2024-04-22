@@ -107,7 +107,7 @@ if uploaded_file is not None:
         result = read_pdf_(data)
         st.session_state["markdown_text"] = result
 else:
-    if st.button("Use Sample I-485"):
+    if st.button("Use Sample I-485", type="primary"):
         # with open("test4.pdf", "rb") as f:
         #    bytes_data = f.read()
         # uploaded_test_file = io.BytesIO(bytes_data)
