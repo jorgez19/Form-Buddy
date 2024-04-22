@@ -168,10 +168,17 @@ if "markdown_text" in st.session_state:
 
 def display_test_pdf():
     st.title("Test PDF Preview")
-    st.subheader("(Click Menu Icon in top-left of PDF viewer to view Full-Size)")
-    b64_pdf = get_base64_of_pdf("test4.pdf")
-    pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="1000" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    # st.subheader("(Click Menu Icon in top-left of PDF viewer to view Full-Size)")
+    b64_pdf = get_base64_of_pdf("test4-1.png")
+    st.markdown(
+        f"<img style='max-width: 100%;max-height: 100%;' src='data:image/png;base64, {b64_pdf}'/>",
+        unsafe_allow_html=True,
+    )
+    b64_pdf2 = get_base64_of_pdf("test4-2.png")
+    st.markdown(
+        f"<img style='max-width: 100%;max-height: 100%;' src='data:image/png;base64, {b64_pdf2}'/>",
+        unsafe_allow_html=True,
+    )
 
 
 show_pdf = st.checkbox("Show Test PDF")
