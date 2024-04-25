@@ -123,11 +123,11 @@ with col1:
         index=0,
     )
     st.markdown(
-        "<center><sub>Note: The Sample I-485 uses the first 2 pages of the I-485 for brevity of the demonstration.</sub></center>",
+        "<center><sub>Note: The Sample I-485 uses the first 2 pages of the I-485 for brevity of the demonstration.</sub></center><br>",
         unsafe_allow_html=True,
     )
     if document_source == "Use Sample I-485":
-        if st.button("Process Sample I-485"):
+        if st.button("Process Sample I-485", type="primary"):
             start_time = time.time()
             file_path = "test4.pdf"  # Example file path
             data = format_text(file_path)
