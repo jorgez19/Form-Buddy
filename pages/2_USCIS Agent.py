@@ -45,10 +45,10 @@ def read_pdf_(text):
     with st.spinner("Analyzing..."):
         convo = model.start_chat(history=[])
         print("1dd")
-        convo.send_message(
-            'A user inputed the following data for their form I-485 and I am to check it. Give me a list of any items that are very likely to be inccorrect. If there are any required fields that should be filled out, mention those. If there are any inconsistencies, mention those. Fields such as Pt1Line6_Gender[0]/Pt1Line6_Gender[1] are checkboxes so only one should be selected. This also pertains to fields ending in YN as those are \\"Yes\\" or \\"No\\" checkboxes. If it all looks good, simply reply "Form filled out Correctly! DO NOT give suggestions as I am not the one filling this out. I am simply checking if everything required it filled out correctly." :'
-            + text
-        )
+        with open("prompts/uscis_prompt.txt", "r") as file:
+            prompt = file.read()
+        print(prompt)
+        convo.send_message(prompt + text)
         print("sent!")
         print(convo.last.text)
         return convo.last.text
@@ -96,7 +96,6 @@ def format_text(doc):
 
 # ------------------------------------------
 
-
 col1, col2 = st.columns([5, 4])
 
 with col1:
@@ -109,7 +108,6 @@ with col1:
     /* Center align radio selection */
     div.stRadio [role=radiogroup]{text-align:center; align-items: center; justify-content: center; !important}
     div.stRadio [data-testid=stWidgetLabel]{text-align:center; align-items: center; justify-content: center; !important}
-    div.stMarkdown {text-align:center; align-items: center; justify-content: center; !important}
 
     /* Center align title */
     div.stHeadingContainer {text-align:center}
@@ -124,7 +122,8 @@ with col1:
         index=0,
     )
     st.markdown(
-        "The Sample I-485 uses the first 2 pages of the I-485 for brevity of the demonstration."
+        "<center><sub>Note: The Sample I-485 uses the first 2 pages of the I-485 for brevity of the demonstration.</sub></center>",
+        unsafe_allow_html=True,
     )
     if document_source == "Use Sample I-485":
         if st.button("Process Sample I-485"):
