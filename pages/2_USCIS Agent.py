@@ -109,6 +109,7 @@ with col1:
     /* Center align radio selection */
     div.stRadio [role=radiogroup]{text-align:center; align-items: center; justify-content: center; !important}
     div.stRadio [data-testid=stWidgetLabel]{text-align:center; align-items: center; justify-content: center; !important}
+    div.stMarkdown {text-align:center; align-items: center; justify-content: center; !important}
 
     /* Center align title */
     div.stHeadingContainer {text-align:center}
@@ -121,6 +122,9 @@ with col1:
         "Choose a source for the I-485 form:",
         ("Use Sample I-485", "Upload File"),
         index=0,
+    )
+    st.markdown(
+        "The Sample I-485 uses the first 2 pages of the I-485 for brevity of the demonstration."
     )
     if document_source == "Use Sample I-485":
         if st.button("Process Sample I-485"):
