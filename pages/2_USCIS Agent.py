@@ -2,6 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 import io
 import base64
+import re
 import time
 from PyPDF2 import PdfReader
 
@@ -48,6 +49,7 @@ def read_pdf_(text):
         with open("prompts/uscis_prompt.txt", "r") as file:
             prompt = file.read()
         print(prompt)
+
         convo.send_message(prompt + text)
         print("sent!")
         print(convo.last.text)
@@ -65,6 +67,22 @@ def get_base64_of_pdf(pdf_path):
 
 
 # ------------------------------------------
+def format_camel_string(input_string):
+    # Insert spaces before capital letters and digits
+    formatted_string = re.sub(r"([A-Z0-9])", r" \1", input_string)
+    # Remove leading space if present
+    formatted_string = formatted_string.strip()
+    # Merge adjacent digits (numbers) into a single word
+    formatted_string = re.sub(r"(\d+)\s(\d+)", r"\1\2", formatted_string)
+    # Insert spaces around the word "of" (case-insensitive)
+    formatted_string = re.sub(r"(?i)(of)", r" \1", formatted_string)
+    formatted_string = (
+        formatted_string.replace("[ 0]", "").replace("[ 1]", "").replace("_", "")
+    )
+    return formatted_string
+
+
+# ------------------------------------------
 
 
 def format_text(doc):
@@ -75,8 +93,9 @@ def format_text(doc):
         if not field.startswith("Pt"):
             continue
         if "/FT" in (fields[field]):
-            print(fields[field]["/FT"])
-            data.append(field + "\n")
+            print(field)
+            field_new = format_camel_string(field)
+            data.append(field_new + "\n")
         if "/V" in (fields[field]):
             value = fields[field]["/V"]
             if value == "/M":
@@ -89,8 +108,16 @@ def format_text(doc):
                 value = "No"
             data.append(value.replace("/", "") + "\n")
         else:
+            if "Gender" in field or "YN" in field:
+                if "0" in field:
+                    data.pop()
+                    continue
+                if "1" in field and field.replace("1", "0") in data:
+                    data.pop()
+                    continue
             data.append("Empty\n")
     data = " ".join(data)
+    print(data)
     return data
 
 
@@ -115,7 +142,7 @@ with col1:
 """,
         unsafe_allow_html=True,
     )
-    st.title("Doc Buddy (USCIS Agent)📃")
+    st.title("Doc Buddy (Applicant)📃")
     document_source = st.radio(
         "Choose a source for the I-485 form:",
         ("Use Sample I-485", "Upload File"),
