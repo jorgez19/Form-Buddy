@@ -183,7 +183,7 @@ def get_base64_of_pdf(pdf_path):
 
 def display_test_pdf():
     st.markdown(
-        "<h2 style='text-align: center'>Test PDF Preview</h2>", unsafe_allow_html=True
+        "<h2 style='text-align: center'>Sample PDF Preview</h2>", unsafe_allow_html=True
     )
     # st.subheader("(Click Menu Icon in top-left of PDF viewer to view Full-Size)")
     b64_pdf = get_base64_of_pdf("test4-1.png")
