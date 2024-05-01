@@ -4,7 +4,7 @@ st.set_page_config(
     page_title="Hello",
     page_icon="👋",
 )
-
+st.markdown("↖️ Note: Use arrow menu in top-left corner")
 st.write("# Welcome to Form Buddy! 👋")
 
 st.sidebar.success("Select a demo above.")
