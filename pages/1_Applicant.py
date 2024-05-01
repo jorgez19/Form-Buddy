@@ -12,7 +12,7 @@ import os
 load_dotenv()
 
 st.set_page_config(page_title="Agent", page_icon="📃", layout="wide")
-st.sidebar.header("USCIS Agent Buddy 📃")
+st.sidebar.header("Applicant Buddy 📃")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 generation_config = {
     "temperature": 0.9,
