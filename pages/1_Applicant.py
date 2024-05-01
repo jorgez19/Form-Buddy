@@ -50,10 +50,7 @@ def read_pdf_(text):
         convo = model.start_chat(history=[])
         with open("prompts/applicant_prompt.txt", "r") as file:
             prompt = file.read()
-        print(prompt)
-
         convo.send_message(prompt + text)
-        print(convo.last.text)
         return convo.last.text
 
 
