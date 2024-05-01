@@ -5,10 +5,15 @@ import base64
 import re
 import time
 from PyPDF2 import PdfReader
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 st.set_page_config(page_title="Agent", page_icon="📃", layout="wide")
 st.sidebar.header("USCIS Agent Buddy 📃")
-genai.configure(api_key="AIzaSyDN_52urInMoFmJzRXB-0wesim80NO3vJg")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 generation_config = {
     "temperature": 0.9,
     "top_p": 1,
@@ -43,7 +48,7 @@ model = genai.GenerativeModel(
 def read_pdf_(text):
     with st.spinner("Analyzing..."):
         convo = model.start_chat(history=[])
-        with open("prompts/uapplicant_prompt.txt", "r") as file:
+        with open("prompts/applicant_prompt.txt", "r") as file:
             prompt = file.read()
         print(prompt)
 
@@ -54,17 +59,16 @@ def read_pdf_(text):
 
 # Format camelstring text
 def format_camel_string(input_string):
-    # Insert spaces before capital letters and digits
-    formatted_string = re.sub(r"([A-Z0-9])", r" \1", input_string)
-    # Remove leading space if present
+    # Insert spaces before capital letters and digits, except within all-uppercase words
+    formatted_string = re.sub(r"([a-z])([A-Z0-9])", r"\1 \2", input_string)
+    # Insert spaces around the word "of" (case-insensitive)
+    formatted_string = re.sub(r"(?i)(\bof\b)", r" \1 ", formatted_string)
+    # Remove leading and trailing spaces
     formatted_string = formatted_string.strip()
     # Merge adjacent digits (numbers) into a single word
     formatted_string = re.sub(r"(\d+)\s(\d+)", r"\1\2", formatted_string)
-    # Insert spaces around the word "of" (case-insensitive)
-    formatted_string = re.sub(r"(?i)(of)", r" \1", formatted_string)
-    formatted_string = (
-        formatted_string.replace("[ 0]", "").replace("[ 1]", "").replace("_", "")
-    )
+    # Clean up special formatting: remove specific patterns
+    formatted_string = formatted_string.replace("[ 0]", "").replace("[ 1]", "").replace("_", "")
     return formatted_string
 
 
