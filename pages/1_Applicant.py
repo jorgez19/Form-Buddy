@@ -43,7 +43,7 @@ model = genai.GenerativeModel(
 def read_pdf_(text):
     with st.spinner("Analyzing..."):
         convo = model.start_chat(history=[])
-        with open("prompts/uapplicant_prompt.txt", "r") as file:
+        with open("prompts/applicant_prompt.txt", "r") as file:
             prompt = file.read()
         print(prompt)
 
